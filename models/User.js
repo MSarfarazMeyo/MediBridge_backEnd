@@ -18,10 +18,10 @@ const UserSchema = new Schema(
 
     about: { type: String, default: "" },
     caption: { type: String, default: "" },
-    subscription: { type: Schema.Types.ObjectId, ref: "Subscription" },
+    subscription: { type: Schema.Types.ObjectId, ref: "Subscription" , default : null },
 
     tags: { type: [String] },
-    categories: [{ type: Schema.Types.ObjectId, ref: "PostCategories" }],
+    categories: [{ type: Schema.Types.ObjectId, ref: "PostCategories"  }],
   },
   { timestamps: true }
 );

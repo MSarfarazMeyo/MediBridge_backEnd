@@ -64,6 +64,7 @@ const loginUser = async (req, res, next) => {
         doctor: user.doctor,
         online: user.online,
         chatId: user.chatId,
+        subscription: user.subscription,
         token: await user.generateJWT(),
       });
     } else {
@@ -79,18 +80,7 @@ const userProfile = async (req, res, next) => {
     let user = await User.findById(req.user._id).populate("subscription");
 
     if (user) {
-      return res.status(201).json({
-        _id: user._id,
-        avatar: user.avatar,
-        name: user.name,
-        email: user.email,
-        verified: user.verified,
-        admin: user.admin,
-        manager: user.manager,
-        doctor: user.doctor,
-        online: user.online,
-        chatId: user.chatId,
-      });
+      return res.status(201).json(user);
     } else {
       let error = new Error("User not found");
       error.statusCode = 404;
@@ -107,8 +97,6 @@ const updateProfile = async (req, res, next) => {
 
     let userId = req.user._id;
 
-    console.log("userId", userId);
-    console.log("userIdToUpdate", userIdToUpdate);
 
     let user = await User.findById(userIdToUpdate).populate("subscription");
 
@@ -142,6 +130,7 @@ const updateProfile = async (req, res, next) => {
       manager: updatedUserProfile.manager,
       doctor: updatedUserProfile.doctor,
       online: updatedUserProfile.online,
+      subscription: updatedUserProfile.subscription,
 
       token: await updatedUserProfile.generateJWT(),
     });
@@ -200,6 +189,8 @@ const updateProfilePicture = async (req, res, next) => {
             manager: updatedUser.manager,
             doctor: updatedUser.doctor,
             chatId: updatedUser.chatId,
+        subscription: updatedUser.subscription,
+
             token: await updatedUser.generateJWT(),
           });
         } else {
@@ -219,6 +210,7 @@ const updateProfilePicture = async (req, res, next) => {
             manager: updatedUser.manager,
             doctor: updatedUser.doctor,
             online: updatedUser.online,
+            subscription: updatedUser.subscription,
 
             token: await updatedUser.generateJWT(),
           });

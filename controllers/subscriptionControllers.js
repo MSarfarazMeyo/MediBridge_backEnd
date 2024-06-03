@@ -5,6 +5,11 @@ import UserModel from "../models/User";
 const createComment = async (req, res, next) => {
   try {
     const user = req.user._id;
+
+    if (!user) {
+      return
+    }
+
     const post = await SubscriptionModel.findOne({ user: user });
     if (post) {
       const error = new Error("Already Requested");
@@ -31,10 +36,10 @@ const getSingle = async (req, res, next) => {
       return res.json(post);
     } else {
       const newdata = new SubscriptionModel({
-        user: req.user._id,
+        user: userId,
         status: "requested",
       });
-      const requesterUser = await UserModel.findById(req.user._id);
+      const requesterUser = await UserModel.findById(userId);
       requesterUser.subscription = newdata._id;
       await requesterUser.save();
       const savedComment = await newdata.save();
